@@ -8,7 +8,9 @@ connectDB();
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: "https://dev-johari.netlify.app"
+}));
 app.use(express.json());
 
 // Routes
@@ -16,7 +18,7 @@ app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/posts", require("./routes/postRoutes"));
 
 app.get("/", (req, res) => {
-  res.send("DevConnect API Running");
+  res.json({ message: "DevConnect API Running" });
 });
 
 const PORT = process.env.PORT || 5000;
