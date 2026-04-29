@@ -93,9 +93,20 @@ exports.updateProfile = async (req, res) => {
 // ================= GET PROFILE =================
 exports.getProfile = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select("-password");
+    console.log("REQ USER:", req.user);
 
-    res.json(user);
+    const userId = req.user.id || req.user._id;
+
+    const user = await User.findById(userId).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({
+      name: user.name,
+      email: user.email
+    });
   } catch (err) {
     res.status(500).json({ message: "Fetch error", error: err.message });
   }
